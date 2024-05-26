@@ -1,0 +1,11 @@
+.inp{
+text-align: center;
+    border: 2px solid #00737e;
+}
+@media (max-width:640px) {
+    .inp{
+        width: 270px;
+        margin-top: 10px;
+    }
+    
+}

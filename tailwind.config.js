@@ -4,12 +4,13 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    'node_modules/preline/dist/*.js',
+
   ],
   theme: {
     extend: {
       colors: {
-        firstColor: '#00737e',
-        
+        firstColor: "#00737e",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -18,5 +19,9 @@ module.exports = {
       },
     },
   },
-  plugins: [require("rippleui")],
+  plugins: [
+    require("rippleui"),
+    require("flowbite/plugin"),
+    require("preline/plugin"),
+  ],
 };

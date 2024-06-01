@@ -1,20 +1,30 @@
 import { BiSupport } from "react-icons/bi";
 import { CiHeart } from "react-icons/ci";
+import { useRouter } from "next/router";
+
 
 function Header() {
+
+  const router=useRouter();
+
+  const signupHandler=()=>{
+
+    router.push("/signup")
+  }
+
+
   return (
+
+
     <header className="sticky top-0">
       <div className="navbar">
         <div className="navbar-start">
-          <a className="navbar-item">
-            <img src="logo.png" alt="" width="50px" />
+          <a href="/" className="navbar-item">
+            <img  src="logo.png" alt="" width="50px" />
           </a>
         </div>
         <div className="navbar-center">
-          {/* <input
-            className="border-firstColor input rtl:m1-0"
-            placeholder="جستجو در شهر"
-          /> */}
+
 
           
         </div>
@@ -34,7 +44,7 @@ function Header() {
 
 
           {/* ورود و ثبت نام */}
-          <button class="btn btn-outline-secondary text-firstColor hover:bg-firstColor border-firstColor">
+          <button onClick={signupHandler}  class="btn btn-outline-secondary text-firstColor hover:bg-firstColor border-firstColor">
             ثبت&zwnj;نام
           </button>
           <a className="hover:text-firstColor text-firstColor navbar-item">

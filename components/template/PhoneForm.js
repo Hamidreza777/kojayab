@@ -1,19 +1,36 @@
+import axios from "axios";
+import { Toast } from "flowbite-react";
 import { useState } from "react";
 
 function PhoneForm() {
   const [send, setSend] = useState("");
   const [digit, setDigit] = useState("hidden");
-
-  const sendHandler = () => {
-    if (send.length > 11 || send.length < 11) {
+  const [submitted, setSubmitted] = useState(false);
+  
+  const sendHandler = (e) => {
+    const value = e.target.value;
+    setSend(value);
+  };
+  
+  const submitHandler = (e) => {
+    console.log(send);
+    e.preventDefault();
+    if (send.length != 11) {
       alert("شماره تلفن اشتباه است");
     } else {
-      setDigit("flex");
+      //setDigit("visible");
+   axios.post("http://localhost:9000/getNumber?number=0912422333").then((result)=>{
+    console.log(result);
+    if(result.status===200 && result.data=="ok200"){
+      alert("okay")
+      Toast.info("sdfsdfa")
     }
+   }).catch((err)=>{
+    console.log(err);
+   })
+    }
+    //setSubmitted(true);
   };
-
-
-
 
   return (
     <>
@@ -34,7 +51,7 @@ function PhoneForm() {
             <input
               maxlength="11"
               value={send}
-              onChange={(e) => setSend(e.target.value)}
+              onChange={sendHandler}
               inputmode="numeric"
               type="text"
               id="floating-phone-number"
@@ -84,7 +101,7 @@ function PhoneForm() {
           </div>
 
           <button
-            onClick={sendHandler}
+            onClick={submitHandler}
             type="submit"
             class="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-[30px]"
           >

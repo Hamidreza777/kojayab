@@ -23,5 +23,6 @@ module.exports = {
     require("rippleui"),
     require("flowbite/plugin"),
     require("preline/plugin"),
+    
   ],
 };

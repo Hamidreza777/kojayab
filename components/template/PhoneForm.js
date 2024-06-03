@@ -1,19 +1,104 @@
-import { useState } from "react";
+import { useState, useEffect,useRef } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 function PhoneForm() {
   const [send, setSend] = useState("");
   const [digit, setDigit] = useState("hidden");
+  const [accept, setAccept] = useState("ارسال کد");
+  const [tooltip, setTooltip] = useState("hidden");
+  const [cdown, setCdown] = useState(5);
+  const [isCounting, setIsCounting] = useState(false);
+  const [timer, setTimer] = useState("hidden");
+  const [recode, setRecode] = useState("hidden");
 
-  const sendHandler = () => {
-    if (send.length > 11 || send.length < 11) {
-      alert("شماره تلفن اشتباه است");
+
+
+  const inputsRef = useRef([]);
+
+
+
+  useEffect(() => {
+    let timer;
+    if (isCounting) {
+      timer = setInterval(() => {
+        setCdown((prevCdown) => {
+          if (prevCdown <= 1) {
+            clearInterval(timer);
+            setIsCounting(false);
+            setTimer("hidden");
+            setRecode("flex");
+            return 59;
+          }
+          return prevCdown - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isCounting]);
+
+
+
+
+
+
+
+
+  useEffect(() => {
+
+    inputsRef.current.forEach((input, index) => {
+
+      input.addEventListener('input', () => {
+
+        if (input.value.length === input.maxLength) {
+
+          if (index < inputsRef.current.length - 1) {
+
+            inputsRef.current[index + 1].focus();
+
+          }
+
+        }
+
+      });
+
+    });
+
+  }, []);
+
+
+
+
+
+
+
+  const sendHandler = (event) => {
+    event.preventDefault();
+
+
+    const char1 = send.charAt(0);
+    const char2 = send.charAt(1);
+
+    const sum = char1 + char2;
+
+    if (sum != "09") {
+      toast.error("شماره باید با 09  شروع شود");
+
+
+      return;
+    }
+
+    if (send.length !== 11) {
+      toast.error("شماره تلفن اشتباه است");
+
     } else {
       setDigit("flex");
+      setAccept("تایید");
+      setTooltip("flex");
+      setTimer("flex");
+
+      setIsCounting(true);
     }
   };
-
-
-
 
   return (
     <>
@@ -59,7 +144,7 @@ function PhoneForm() {
               maxLength="11"
               value={send}
               onChange={(e) => setSend(e.target.value)}
-              inputmode="numeric"
+              inputMode="numeric"
               type="text"
               id="floating-phone-number"
               className="block py-2.5 ps-6 pe-0 w-[243px] text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -96,7 +181,7 @@ function PhoneForm() {
             }${cdown}`}</p>
             <button
               onClick={() => setIsCounting(true)}
-              className={`${recode} text-white w-[130px] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-[30px]`}
+              className={`${recode} text-white w-[130px] bg-firstColor hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-[30px]`}
             >
               ارسال مجدد کد
             </button>
@@ -104,9 +189,9 @@ function PhoneForm() {
           </div>
 
           <button
-            onClick={submitHandler}
+            onClick={sendHandler}
             type="submit"
-            className="text-white w-full bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-[30px]"
+            className="text-white w-full bg-firstColor hover:bg-slate-100 hover:text-firstColor hover:border-red-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mt-[30px]"
           >
             {accept}
           </button>
